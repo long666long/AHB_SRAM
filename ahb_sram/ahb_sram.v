@@ -2,19 +2,19 @@ module ahb_sram(
     //input signals from Master
     input           hclk,
     input           hrstn,
-    input           hsel,
-    input [1:0]     htrans,
-    input [2:0]     hsize,
-    input [2:0]     hburst,
-    input           hwrite,
+    input           hsel, //slave选择信号
+    input [1:0]     htrans, //传送类型，当前传输类型 IDLE, BUSY, NONSEQ, SEQ
+    input [2:0]     hsize, // 传送带宽，每一个transfer传输的数据大小，以字节为单位，最高支持1024位
+    input [2:0]     hburst, //批量传送，burst类型，支持4、8、16 burst，incrementing/wrapping
+    input           hwrite,  //传送方向，1为写，0为读
     input [31:0]    haddr,
     input [31:0]    hwdata,
-    input           hready_in,
+    input           hready_in,  //传送完成	 控制HRDATA的读出数据周期，，高：Slave输出传输结束，低：Slave需延长传输周期
 
     //output signals to Master
-    output          hready_out,
-    output          hresp,
-    output [31:0]   hrdata,
+    output          hready_out, //传送完成	 控制HRDATA的读出数据周期，，高：Slave输出传输结束，低：Slave需延长传输周期
+    output          hresp,      //传送响应  Slave发给Master的总线传输状态OKAY, ERROR, RETRY, SPLIT
+    output [31:0]   hrdata,      //
 
     //input signals from sram_core(read data)
     input [7:0]     sram_q0,//bank0
